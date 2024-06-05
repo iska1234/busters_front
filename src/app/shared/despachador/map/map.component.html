@@ -1,5 +1,6 @@
-<h1>Mapa</h1>
-<button (click)="crearMarcador()">Crear Marcador</button>
-<hr>
-
-<div #map id="map"></div>
+<div class="relative">
+  <div class="flex justify-end p-2">
+    <button mat-raised-button color="primary" (click)="crearMarcador()">Crear Marcador</button>
+  </div>
+  <div #map id="map" class="mt-8 border border-primary-dark shadow-md rounded-md min-h-[89vh] p-8"></div>
+</div>
