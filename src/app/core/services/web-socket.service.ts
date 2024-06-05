@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 export class WebsocketService {
 
   public socketStatus = false;
-  public usuario = null;
 
   constructor(
     private socket: Socket

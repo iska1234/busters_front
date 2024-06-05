@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from '../../../../environments/environments';
@@ -6,9 +12,16 @@ import { ILugar } from '../../../core/models/ILugar';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClient } from '@angular/common/http';
 import { WebsocketService } from '../../../core/services/web-socket.service';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { Socket } from 'ngx-socket-io';
 
 interface RespMarcadores {
   [key: string]: ILugar;
+}
+
+export class WayPoints {
+  start: any;
+  end: any;
 }
 
 @Component({
@@ -20,11 +33,25 @@ interface RespMarcadores {
 })
 export class WMapComponent {
   mapa!: mapboxgl.Map;
-
-  constructor(private http: HttpClient, private wsService: WebsocketService) {}
-
   lugares: RespMarcadores = {};
   markersMapbox: { [id: string]: mapboxgl.Marker } = {};
+
+  @ViewChild('asGeocoder') asGeocoder!: ElementRef;
+
+  wayPoints: WayPoints = { start: null, end: null };
+  modeInput = 'start';
+
+  cbAddress: EventEmitter<any> = new EventEmitter<any>();
+  dataWayPoints: Array<any> = [];
+  //
+  markerDriver: any = null;
+
+  constructor(
+    private http: HttpClient,
+    private wsService: WebsocketService,
+    private renderer2: Renderer2,
+    private socket: Socket
+  ) {}
 
   ngOnInit() {
     this.http
@@ -33,8 +60,10 @@ export class WMapComponent {
         console.log(lugares);
         this.lugares = lugares;
         this.crearMapa();
+        this.socket.fromEvent<{ coords: any }>('position').subscribe(({ coords }) => {
+          this.addMarkerCustom(coords);
       });
-
+      });
     this.escucharSockets();
   }
 
@@ -67,9 +96,100 @@ export class WMapComponent {
       zoom: 11.5,
     });
 
+    //this.mapa.addControl(new mapboxgl.NavigationControl)
+    const geocoder = new MapboxGeocoder({
+      accessToken: environment.mapboxAccessToken,
+      mapboxgl: mapboxgl,
+    });
+
+    this.renderer2.appendChild(
+      this.asGeocoder.nativeElement,
+      geocoder.onAdd(this.mapa)
+    );
+
+    geocoder.on('result', ($event) => {
+      const { result } = $event;
+      const center = result.center;
+      const longitude = center[0];
+      const latitude = center[1];
+
+      const id = result.id;
+      const placeName = result.place_name;
+      geocoder.clear();
+
+      this.cbAddress.emit(result);
+    });
+
+    this.cbAddress.subscribe((getPoint) => {
+      if (this.modeInput === 'start') {
+        this.wayPoints.start = getPoint;
+      }
+
+      if (this.modeInput === 'end') {
+        this.wayPoints.end = getPoint;
+      }
+    });
+
     for (const [id, marcador] of Object.entries(this.lugares)) {
       this.agregarMarcador(marcador);
     }
+  }
+
+  cargarCoordenadas(coords: any): void {
+    const url = [
+      `https://api.mapbox.com/directions/v5/mapbox/cycling/`,
+      `${coords[0][0]},${coords[0][1]};${coords[1][0]},${coords[1][1]}`,
+      `?steps=true&geometries=geojson&access_token=${environment.mapboxAccessToken}`,
+    ].join('');
+
+    this.http.get(url).subscribe((res: any) => {
+      const data = res.routes[0];
+      const route = data.geometry.coordinates;
+
+      this.mapa.addSource('route', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: route,
+          },
+        },
+      });
+
+      this.mapa.addLayer({
+        id: 'route',
+        type: 'line',
+        source: 'route',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': '#23233A',
+          'line-width': 5,
+        },
+      });
+
+      this.dataWayPoints = route;
+      //adaptar al perimetro
+      this.mapa.fitBounds([route[0], route[route.length - 1]], {
+        padding: 100,
+      });
+
+      this.wsService.emit('find-driver', {points:route})
+    });
+  }
+
+  dibujarRuta(): void {
+    console.log(this.wayPoints);
+    const coords = [this.wayPoints.start.center, this.wayPoints.end.center];
+    this.cargarCoordenadas(coords);
+  }
+
+  changeMode(mode: string): void {
+    this.modeInput = mode;
   }
 
   agregarMarcador(marcador: ILugar) {
@@ -127,5 +247,25 @@ export class WMapComponent {
 
     //emitir marcador nuevo
     this.wsService.emit('marcador-nuevo', customMarker);
+  }
+
+  testMarker(): void {
+    this.addMarkerCustom([-77.00130084281118, -12.116866849976887]);
+  }
+
+  addMarkerCustom(coords: any): void {
+    const el = document.createElement('div');
+
+    el.className = 'marker';
+    el.style.backgroundImage = `url(assets/icons/chofer.svg`;
+    el.style.width = `50px`;
+    el.style.height = `50px`;
+    el.style.backgroundSize = '100%';
+    if(!this.markerDriver){
+      this.markerDriver = new mapboxgl.Marker(el)
+    }else{
+      this.markerDriver.setLngLat(coords).addTo(this.mapa);
+    }
+
   }
 }

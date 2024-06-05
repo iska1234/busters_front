@@ -1,6 +1,57 @@
 <div class="relative">
-  <div class="flex justify-end p-2">
-    <button mat-raised-button color="primary" (click)="crearMarcador()">Crear Marcador</button>
+
+  <div class="space-y-4">
+    <!-- Geocoder Input -->
+    <div class="flex justify-between items-center w-full mb-8">
+
+      <div id="geocoder" #asGeocoder class="geocoder flex w-full justify-start"></div>
+      <div class="w-full flex justify-end gap-4">
+        <button mat-raised-button color="primary" (click)="testMarker()">
+          Crear Marcador
+        </button>
+        <button (click)="dibujarRuta()" mat-raised-button color="primary">
+        Dibujar Ruta
+      </button>
+      <button  mat-raised-button color="primary">
+        Generar Orden
+      </button>
+    </div>
   </div>
-  <div #map id="map" class="mt-8 border border-primary-dark shadow-md rounded-md min-h-[89vh] p-8"></div>
+    <!-- Start and End Route Selection -->
+    <div class="flex flex-col">
+      <!-- Start Route -->
+      <div
+        class="cursor-pointer flex flex-col justify-center items-center p-2 border-2 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 mb-2"
+        (click)="changeMode('start')"
+        [ngClass]="{
+          'active-way border-blue-500 bg-blue-100 text-blue-900': modeInput === 'start',
+          'border-gray-300 bg-white': modeInput !== 'start'
+        }"
+      >
+        <div class="mock-label font-semibold text-lg mb-2">Inicio</div>
+        <div class="mock-input text-sm text-gray-500">{{wayPoints.start?.place_name}}</div>
+      </div>
+
+      <!-- End Route -->
+      <div
+        class="cursor-pointer flex flex-col justify-center items-center p-2 border-2 rounded-lg transition duration-200 ease-in-out transform hover:scale-105"
+        (click)="changeMode('end')"
+        [ngClass]="{
+          'active-way border-green-500 bg-green-100 text-green-900': modeInput === 'end',
+          'border-gray-300 bg-white': modeInput !== 'end'
+        }"
+      >
+        <div class="mock-label font-semibold text-lg mb-2">Final</div>
+        <div class="mock-input text-sm text-gray-500">{{wayPoints.end?.place_name}}</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div
+    #map
+    id="map"
+    class="mt-8 border border-primary-dark shadow-md rounded-md min-h-[89vh] p-8"
+  ></div>
 </div>
