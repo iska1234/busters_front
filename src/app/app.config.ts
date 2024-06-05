@@ -10,13 +10,13 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { routes } from './app.routes';
 import { environment } from '../environments/environments';
 
-const config: SocketIoConfig = { url: environment.wsUrl, options: {} };
+
 export const appConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom(
       BrowserAnimationsModule,
       ToastrModule.forRoot(),
-      SocketIoModule.forRoot(config)
+      SocketIoModule.forRoot(environment.socketConfig)
     ),
     provideRouter(routes),
     provideClientHydration(),
