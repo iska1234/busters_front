@@ -6,12 +6,18 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { routes } from './app.routes';
+import { environment } from '../environments/environments';
 
-
+const config: SocketIoConfig = { url: environment.wsUrl, options: {} };
 export const appConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom(BrowserAnimationsModule, ToastrModule.forRoot()),
+    importProvidersFrom(
+      BrowserAnimationsModule,
+      ToastrModule.forRoot(),
+      SocketIoModule.forRoot(config)
+    ),
     provideRouter(routes),
     provideClientHydration(),
     provideAnimationsAsync(),
@@ -21,6 +27,9 @@ export const appConfig: ApplicationConfig = {
       timeOut: 3000,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
-    }), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(),
-  ]
+    }),
+    provideAnimationsAsync(),
+    provideAnimationsAsync(),
+    provideAnimationsAsync(),
+  ],
 };

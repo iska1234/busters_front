@@ -14,7 +14,7 @@ export const DESPACHADOR_ROUTES: Routes = [
     children: [
       { path: '', component: InicioComponent },
       { path: 'users', component: UsersComponent },
-      { path: 'choferes', component: ChoferesComponent },
+      { path: 'drivers', component: ChoferesComponent },
     ],
   },
   { path: '**', redirectTo: '' },
