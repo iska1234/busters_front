@@ -57,11 +57,10 @@ export class WMapComponent {
     this.http
       .get<RespMarcadores>('http://localhost:5500/mapa/get')
       .subscribe((lugares) => {
-        console.log(lugares);
         this.lugares = lugares;
         this.crearMapa();
         this.socket.fromEvent<{ coords: any }>('position').subscribe(({ coords }) => {
-          this.addMarkerCustom(coords);
+          this.addMarkerChofer(coords);
       });
       });
     this.escucharSockets();
@@ -250,16 +249,16 @@ export class WMapComponent {
   }
 
   testMarker(): void {
-    this.addMarkerCustom([-77.00130084281118, -12.116866849976887]);
+    this.addMarkerChofer([-77.00130084281118, -12.116866849976887]);
   }
 
-  addMarkerCustom(coords: any): void {
+  addMarkerChofer(coords: any): void {
     const el = document.createElement('div');
 
     el.className = 'marker';
     el.style.backgroundImage = `url(assets/icons/chofer.svg`;
-    el.style.width = `50px`;
-    el.style.height = `50px`;
+    el.style.width = `30px`;
+    el.style.height = `30px`;
     el.style.backgroundSize = '100%';
     if(!this.markerDriver){
       this.markerDriver = new mapboxgl.Marker(el)
@@ -267,5 +266,28 @@ export class WMapComponent {
       this.markerDriver.setLngLat(coords).addTo(this.mapa);
     }
 
+  }
+  addMarkerCliente(coords: any): void {
+    const el = document.createElement('div');
+
+    el.className = 'marker';
+    el.style.backgroundImage = `url(assets/icons/person.svg`;
+    el.style.width = `30px`;
+    el.style.height = `30px`;
+    el.style.backgroundSize = '100%';
+    if(!this.markerDriver){
+      this.markerDriver = new mapboxgl.Marker(el)
+    }else{
+      this.markerDriver.setLngLat(coords).addTo(this.mapa);
+    }
+
+  }
+
+  establecerInicio() {
+    this.modeInput = 'start';
+    this.cbAddress.subscribe((getPoint) => {
+      this.wayPoints.start = getPoint;
+      console.log("Inicio establecido:", getPoint);
+    });
   }
 }
