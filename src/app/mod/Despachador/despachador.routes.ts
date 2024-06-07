@@ -3,6 +3,7 @@ import InicioComponent from './inicio/inicio.component';
 import UsersComponent from './users/users.component';
 import ChoferesComponent from './choferes/choferes.component';
 import LayoutComponent from './layout/layout.component';
+import OrdersComponent from './orders/orders.component';
 
 
 
@@ -15,6 +16,7 @@ export const DESPACHADOR_ROUTES: Routes = [
       { path: '', component: InicioComponent },
       { path: 'users', component: UsersComponent },
       { path: 'drivers', component: ChoferesComponent },
+      { path: 'orders', component: OrdersComponent },
     ],
   },
   { path: '**', redirectTo: '' },

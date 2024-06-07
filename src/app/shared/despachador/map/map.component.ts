@@ -14,14 +14,12 @@ import { HttpClient } from '@angular/common/http';
 import { WebsocketService } from '../../../core/services/web-socket.service';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { Socket } from 'ngx-socket-io';
-
-
+import { MatDialog } from '@angular/material/dialog';
+import { ModalNewOrderComponent } from '../modal-new-order/modal-new-order.component';
 
 interface RespMarcadores {
   [key: string]: ILugar;
 }
-
-
 
 export class WayPoints {
   start: any;
@@ -44,7 +42,7 @@ export class WMapComponent {
   @ViewChild('asGeocoder') asGeocoder!: ElementRef;
 
   wayPoints: WayPoints = { start: null, end: null };
-  WayPoints: WayPoints = { start: null, end: null };
+
   modeInput = 'start';
 
   cbAddress: EventEmitter<any> = new EventEmitter<any>();
@@ -56,7 +54,8 @@ export class WMapComponent {
     private http: HttpClient,
     private wsService: WebsocketService,
     private renderer2: Renderer2,
-    private socket: Socket
+    private socket: Socket,
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -342,5 +341,16 @@ export class WMapComponent {
 
   }
 
-
+  openDialog(
+    enterAnimationDuration: string,
+    exitAnimationDuration: string
+  ): void {
+    const { lat, lng } = this.wayPoints.end.center;
+    this.dialog.open(ModalNewOrderComponent, {
+      width: '500px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: { lat, lng },
+    });
+  }
 }
