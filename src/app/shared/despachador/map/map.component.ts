@@ -15,9 +15,13 @@ import { WebsocketService } from '../../../core/services/web-socket.service';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { Socket } from 'ngx-socket-io';
 
+
+
 interface RespMarcadores {
   [key: string]: ILugar;
 }
+
+
 
 export class WayPoints {
   start: any;
@@ -35,10 +39,12 @@ export class WMapComponent {
   mapa!: mapboxgl.Map;
   lugares: RespMarcadores = {};
   markersMapbox: { [id: string]: mapboxgl.Marker } = {};
+  rutaCreada: boolean = false;
 
   @ViewChild('asGeocoder') asGeocoder!: ElementRef;
 
   wayPoints: WayPoints = { start: null, end: null };
+  WayPoints: WayPoints = { start: null, end: null };
   modeInput = 'start';
 
   cbAddress: EventEmitter<any> = new EventEmitter<any>();
@@ -59,9 +65,10 @@ export class WMapComponent {
       .subscribe((lugares) => {
         this.lugares = lugares;
         this.crearMapa();
-        this.socket.fromEvent<{ coords: any }>('position').subscribe(({ coords }) => {
-          this.addMarkerChofer(coords);
-      });
+        // this.socket.fromEvent<{ coords: any }>('position').subscribe(({ coords }) => {
+        //   this.addMarkerChofer(coords);
+        // });
+
       });
     this.escucharSockets();
   }
@@ -177,19 +184,55 @@ export class WMapComponent {
         padding: 100,
       });
 
+      console.log(route)
       this.wsService.emit('find-driver', {points:route})
     });
   }
 
   dibujarRuta(): void {
-    console.log(this.wayPoints);
     const coords = [this.wayPoints.start.center, this.wayPoints.end.center];
+
+    this.agregarMarcadorConIcono(coords[0][0], coords[0][1], 'assets/icons/start.svg');
+    this.agregarMarcadorConIcono(coords[1][0], coords[1][1], 'assets/icons/person.svg');
+
     this.cargarCoordenadas(coords);
+    this.rutaCreada = true;
+    console.log(coords);
   }
+
+  limpiarMapa(): void {
+    // Remover la capa de la ruta si existe
+    if (this.mapa.getLayer('route')) {
+      this.mapa.removeLayer('route');
+    }
+
+    // Remover la fuente de la ruta si existe
+    if (this.mapa.getSource('route')) {
+      this.mapa.removeSource('route');
+    }
+
+    // Limpiar los waypoints
+    this.wayPoints = { start: null, end: null };
+
+    // Limpiar el marcador del conductor
+    if (this.markerDriver) {
+      this.markerDriver.remove();
+      this.markerDriver = null;
+    }
+
+    // Limpiar el array de datos de la ruta
+    this.dataWayPoints = [];
+
+    // Limpiar la interfaz del geocoder
+    this.cbAddress.emit(null);
+  }
+
 
   changeMode(mode: string): void {
     this.modeInput = mode;
   }
+
+
 
   agregarMarcador(marcador: ILugar) {
     const h2 = document.createElement('h2');
@@ -234,22 +277,38 @@ export class WMapComponent {
     this.markersMapbox[marcador.id] = marker;
   }
 
-  crearMarcador() {
+  agregarMarcadorConIcono(lng: number, lat: number, iconUrl: string) {
+    const el = document.createElement('div');
+    el.className = 'marker';
+    el.style.backgroundImage = `url(${iconUrl})`;
+    el.style.width = `30px`;
+    el.style.height = `30px`;
+    el.style.backgroundSize = '100%';
+
+    const marker = new mapboxgl.Marker(el)
+      .setLngLat([lng, lat])
+      .addTo(this.mapa);
+
+    return marker;
+  }
+
+  crearMarcador(lng: number, lat: number, placeName: string) {
     const customMarker: ILugar = {
       id: new Date().toISOString(),
-      lng: -77.00130084281118,
-      lat: -12.116866849976887,
-      nombre: 'Sin nombre',
+      lng: lng,
+      lat: lat,
+      nombre: placeName,
       color: '#' + Math.floor(Math.random() * 16777215).toString(16),
     };
     this.agregarMarcador(customMarker);
 
-    //emitir marcador nuevo
+    // Emitir marcador nuevo
     this.wsService.emit('marcador-nuevo', customMarker);
   }
 
-  testMarker(): void {
-    this.addMarkerChofer([-77.00130084281118, -12.116866849976887]);
+
+  guardarRuta():void{
+
   }
 
   addMarkerChofer(coords: any): void {
@@ -265,8 +324,8 @@ export class WMapComponent {
     }else{
       this.markerDriver.setLngLat(coords).addTo(this.mapa);
     }
-
   }
+
   addMarkerCliente(coords: any): void {
     const el = document.createElement('div');
 
@@ -283,11 +342,5 @@ export class WMapComponent {
 
   }
 
-  establecerInicio() {
-    this.modeInput = 'start';
-    this.cbAddress.subscribe((getPoint) => {
-      this.wayPoints.start = getPoint;
-      console.log("Inicio establecido:", getPoint);
-    });
-  }
+
 }

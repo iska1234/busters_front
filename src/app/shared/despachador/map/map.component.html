@@ -8,10 +8,10 @@
         class="geocoder flex w-full justify-start"
       ></div>
       <div class="w-full flex justify-end gap-4">
-        <button mat-raised-button color="primary" (click)="crearMarcador()">
-          Establecer {{ modeInput === 'start' ? 'Inicio' : 'Final' }}
+        <button mat-raised-button color="primary"  [disabled]="rutaCreada" (click)="limpiarMapa()">
+          Limpiar
         </button>
-        <button (click)="dibujarRuta()" mat-raised-button color="primary">
+        <button (click)="dibujarRuta()" mat-raised-button color="primary" [disabled]="!wayPoints.start || !wayPoints.end">
           Establecer Ruta
         </button>
         <button mat-raised-button color="primary">Generar Orden</button>
