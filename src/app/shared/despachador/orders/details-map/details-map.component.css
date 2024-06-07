@@ -1,0 +1,13 @@
+.mock-label {
+  padding: .25rem;
+  font-weight: 600;
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+  background-color: aqua;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}

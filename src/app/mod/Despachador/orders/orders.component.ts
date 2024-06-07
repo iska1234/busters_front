@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { WOrdersCardsComponent } from '../../../shared/despachador/orders-cards/orders-cards.component';
+
+import { WOrdersTableComponent } from '../../../shared/despachador/orders/orders-table/orders-table.component';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, WOrdersCardsComponent],
+  imports: [CommonModule, WOrdersTableComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })

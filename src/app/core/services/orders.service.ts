@@ -31,4 +31,20 @@ export class OrdersService {
     );
   }
 
+  getAllOrders(): Observable<any> {
+    const url = `${this.apiUrl}/orders/all`;
+    const headers = getAuthHeaders(this.tokenService);
+    return this.http.get<any>(url, { headers }).pipe(
+      map(response => response.data)
+    );
+  }
+
+  getOrderById(orderId: number): Observable<any> {
+    const url = `${this.apiUrl}/orders/details/${orderId}`;
+    const headers = getAuthHeaders(this.tokenService);
+    return this.http.get<any>(url, { headers }).pipe(
+      map(response => response.data)
+    );
+  }
+
 }

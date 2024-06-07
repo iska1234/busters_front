@@ -4,6 +4,7 @@ import UsersComponent from './users/users.component';
 import ChoferesComponent from './choferes/choferes.component';
 import LayoutComponent from './layout/layout.component';
 import OrdersComponent from './orders/orders.component';
+import DetailsComponent from './orders/details/details.component';
 
 
 
@@ -17,6 +18,7 @@ export const DESPACHADOR_ROUTES: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'drivers', component: ChoferesComponent },
       { path: 'orders', component: OrdersComponent },
+      { path: 'order-details/:id', component: DetailsComponent },
     ],
   },
   { path: '**', redirectTo: '' },

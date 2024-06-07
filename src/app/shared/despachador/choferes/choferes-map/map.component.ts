@@ -7,24 +7,18 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as mapboxgl from 'mapbox-gl';
-import { environment } from '../../../../environments/environments';
-import { ILugar } from '../../../core/models/ILugar';
+import { environment } from '../../../../../environments/environments';
+import { ILugar } from '../../../../core/models/ILugar';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClient } from '@angular/common/http';
-import { WebsocketService } from '../../../core/services/web-socket.service';
+import { WebsocketService } from '../../../../core/services/web-socket.service';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { Socket } from 'ngx-socket-io';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalNewOrderComponent } from '../modal-new-order/modal-new-order.component';
+import { ModalNewOrderComponent } from '../../orders/modal-new-order/modal-new-order.component';
+import { RespMarcadores, WayPoints } from '../../../../core/models/IMapas';
 
-interface RespMarcadores {
-  [key: string]: ILugar;
-}
 
-export class WayPoints {
-  start: any;
-  end: any;
-}
 
 @Component({
   selector: 'w-map',
@@ -64,9 +58,6 @@ export class WMapComponent {
       .subscribe((lugares) => {
         this.lugares = lugares;
         this.crearMapa();
-        // this.socket.fromEvent<{ coords: any }>('position').subscribe(({ coords }) => {
-        //   this.addMarkerChofer(coords);
-        // });
 
       });
     this.escucharSockets();
@@ -310,36 +301,7 @@ export class WMapComponent {
 
   }
 
-  addMarkerChofer(coords: any): void {
-    const el = document.createElement('div');
 
-    el.className = 'marker';
-    el.style.backgroundImage = `url(assets/icons/chofer.svg`;
-    el.style.width = `30px`;
-    el.style.height = `30px`;
-    el.style.backgroundSize = '100%';
-    if(!this.markerDriver){
-      this.markerDriver = new mapboxgl.Marker(el)
-    }else{
-      this.markerDriver.setLngLat(coords).addTo(this.mapa);
-    }
-  }
-
-  addMarkerCliente(coords: any): void {
-    const el = document.createElement('div');
-
-    el.className = 'marker';
-    el.style.backgroundImage = `url(assets/icons/person.svg`;
-    el.style.width = `30px`;
-    el.style.height = `30px`;
-    el.style.backgroundSize = '100%';
-    if(!this.markerDriver){
-      this.markerDriver = new mapboxgl.Marker(el)
-    }else{
-      this.markerDriver.setLngLat(coords).addTo(this.mapa);
-    }
-
-  }
 
   openDialog(
     enterAnimationDuration: string,

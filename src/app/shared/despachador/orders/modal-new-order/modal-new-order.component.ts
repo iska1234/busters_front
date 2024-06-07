@@ -12,11 +12,11 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { WInput } from '../../ui/input/input.component';
+import { WInput } from '../../../ui/input/input.component';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { IUsersRes } from '../../../core/models/IUsersRes';
-import { OrdersService } from '../../../core/services/orders.service';
+import { IUsersRes } from '../../../../core/models/IUsersRes';
+import { OrdersService } from '../../../../core/services/orders.service';
 
 
 @Component({
