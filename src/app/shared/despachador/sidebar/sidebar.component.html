@@ -1,6 +1,10 @@
 <div class="bg-slate-100 border-r h-full p-4">
-  <div class="relative flex flex-col bg-primary-dark text-white h-full min-h-[100vh] w-full max-w-[20rem] p-4 rounded-md shadow-md">
-    <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-white">
+  <div
+    class="relative flex flex-col  bg-primary-dark text-white h-full min-h-[100vh] w-full max-w-[20rem] p-4 rounded-md shadow-md"
+  >
+    <nav
+      class="flex flex-col gap-8 min-w-[240px] p-2 font-sans text-base font-normal text-white"
+    >
       <div
         *ngFor="let route of routes"
         [routerLink]="[route.path]"
@@ -8,7 +12,10 @@
         tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
       >
-        <div class="grid place-items-center mr-4" [innerHTML]="route.icon"></div>
+        <div
+          class="grid place-items-center mr-4"
+          [innerHTML]="route.icon"
+        ></div>
         <span>{{ route.label }}</span>
       </div>
     </nav>

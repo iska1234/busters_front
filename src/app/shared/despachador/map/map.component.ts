@@ -345,12 +345,14 @@ export class WMapComponent {
     enterAnimationDuration: string,
     exitAnimationDuration: string
   ): void {
-    const { lat, lng } = this.wayPoints.end.center;
+    const [lng, lat] = this.wayPoints.end.center;
     this.dialog.open(ModalNewOrderComponent, {
       width: '500px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: { lat, lng },
     });
+    console.log(this.wayPoints.end.center)
   }
+
 }
