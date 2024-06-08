@@ -4,11 +4,11 @@
     <div>
       <p><strong>Order ID:</strong> {{ order.id }}</p>
       <p><strong>User Name:</strong> {{ order.name }} {{ order.lastname }}</p>
-      </div>
-      <div>
-        <p><strong>Status:</strong> {{ order.status }}</p>
+    </div>
+    <div>
+      <p><strong>Status:</strong> {{ order.status }}</p>
       <p><strong>Timestamp:</strong> {{ order.timestamp | date:'short' }}</p>
     </div>
   </div>
 </div>
-<w-details-map />
+<w-details-map [orderLat]="order.lat" [orderLng]="order.lng"></w-details-map>

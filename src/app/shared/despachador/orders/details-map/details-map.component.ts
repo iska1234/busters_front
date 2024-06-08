@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -24,6 +25,10 @@ import { RespMarcadores, WayPoints } from '../../../../core/models/IMapas';
   styleUrl: './details-map.component.css'
 })
 export class WDetailsMapComponent {
+
+  @Input() orderLat!: number;
+  @Input() orderLng!: number;
+
   mapa!: mapboxgl.Map;
   rutaCreada: boolean = false;
   modeInput = 'start';
@@ -141,7 +146,9 @@ export class WDetailsMapComponent {
   }
 
   dibujarRuta(): void {
-    const coords = [[-77.016902, -12.126417 ],[-77.01594, -12.107837 ]]
+    if (!this.orderLat || !this.orderLng) return;
+
+    const coords = [[-77.016902, -12.126417], [this.orderLng, this.orderLat]];
 
     this.agregarMarcadorConIcono(coords[0][0], coords[0][1], 'assets/icons/start.svg');
     this.agregarMarcadorConIcono(coords[1][0], coords[1][1], 'assets/icons/person.svg');
