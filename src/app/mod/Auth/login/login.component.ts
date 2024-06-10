@@ -20,7 +20,7 @@ import { IAuthRes } from '../../../core/models/IAuthRes';
   templateUrl: './login.component.html',
 
 })
-export default class LoginComponent {
+export class LoginComponent {
   private tkService = inject(TokenService);
   private userDataService = inject(UserDataService);
   private jwtDecoderService = inject(JwtDecoderService);

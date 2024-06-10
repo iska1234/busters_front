@@ -6,13 +6,13 @@ import { WebsocketService } from '../../../core/services/web-socket.service';
 import { WMapComponent } from '../../../shared/despachador/choferes/choferes-map/map.component';
 
 @Component({
-  selector: 'app-choferes',
+  selector: 'app-driver',
   standalone: true,
   imports: [CommonModule, WMapComponent],
-  templateUrl: './choferes.component.html',
-  styleUrl: './choferes.component.css',
+  templateUrl: './driver.component.html',
+  styleUrl: './driver.component.css',
 })
-export default class ChoferesComponent {
+export class DriverComponent {
 
   constructor(private wsService: WebsocketService){
 

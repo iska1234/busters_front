@@ -1,17 +1,7 @@
 import { Routes } from '@angular/router';
-import InicioComponent from './inicio/inicio.component';
-
-
+import UserComponent from './user.component';
 
 export const USER_ROUTES: Routes = [
-  {
-    path: '',
-    title: 'Inicio',
-    component: InicioComponent,
-    // children: [
-    //   { path: '', component: TareasComponent },
-    //   { path: 'tarea-details/:taskId', component: TareaDetailsComponent },
-    // ],
-  },
+  { path: '', title: 'Home', component: UserComponent },
   { path: '**', redirectTo: '' },
 ];

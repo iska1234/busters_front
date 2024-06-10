@@ -13,7 +13,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   templateUrl: './register.component.html',
 
 })
-export default class RegisterComponent {
+export class RegisterComponent {
 
   user: any = {};
   loading = false;
