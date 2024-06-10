@@ -10,6 +10,6 @@ import { WOrdersTableComponent } from '../../../shared/despachador/orders/orders
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
-export default class OrdersComponent {
+export class OrdersComponent {
 
 }

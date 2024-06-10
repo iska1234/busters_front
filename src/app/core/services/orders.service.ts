@@ -22,7 +22,7 @@ export class OrdersService {
     const body = { userId, lat, lng };
     return this.http.post(`${this.apiUrl}/orders/new`, body, { headers });
   }
-  // Método para obtener todos los choferes
+  // Método para obtener todos los driver
   getAllDrivers(): Observable<any> {
     const url = `${this.apiUrl}/orders/get-choferes`;
     const headers = getAuthHeaders(this.tokenService);

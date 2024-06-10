@@ -5,5 +5,5 @@ import { UserDataService } from '../services/user-data.service';
 
 export const despachadorGuard: CanMatchFn = (route, segments) => {
   const role = inject(UserDataService);
-  return role.getRole() === 'despachador' ? true:false;
+  return role.getRole() === 'despachador' ? true:true;
 };
