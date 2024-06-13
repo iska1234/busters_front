@@ -44,10 +44,13 @@ export class LoginComponent {
         this.userDataService.setUserId(decodedToken.userId.toString());
         this.userDataService.setRole(decodedToken.role);
         this.tkService.setToken(res.data.token);
-        this.router.navigate(['/']);
-        this.toastr.success('Login Exitoso.', 'Success');
-        this.loading = false;
-
+        const urlRole = 'dispatcher';
+        this.router.navigate(['/'+urlRole.toString()]).then(
+          (response) => {
+            this.toastr.success('Login Exitoso.', 'Success');
+            this.loading = false;
+          }
+        );
       },
       error: (err) => {
         this.toastr.error('Credenciales Inválidas', 'Error');
@@ -55,6 +58,4 @@ export class LoginComponent {
       }
     });
   }
-
-
 }

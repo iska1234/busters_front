@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import { RouterLink} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SafeHtml } from '@angular/platform-browser';
 import { RouteService } from './service/route.service';
-import {routes} from "../../../app.routes";
 @Component({
   selector: 'sidebar',
   standalone: true,
@@ -15,16 +14,17 @@ import {routes} from "../../../app.routes";
   styleUrl: './sidebar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   routes: { path: string, label: string, icon: SafeHtml }[] = [];
-  router = inject(Router)
-  urlBase:string = '';
+  urlBase:string;
   show: boolean = true;
-  constructor(private routeService: RouteService) {}
+  constructor(private routeService: RouteService) {
+    this.urlBase = '';
+  }
 
   ngOnInit(): void {
     this.routes = this.routeService.getRoutes();
-    this.urlBase = this.router.url;
+    this.urlBase = '/dispatcher';
     console.log(this.urlBase);
   }
   onHidden(){
