@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -14,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { ILugar } from '../../../../core/models/ILugar';
 import { RespMarcadores, WayPoints } from '../../../../core/models/IMapas';
+import { Socket } from 'ngx-socket-io';
 
 
 
@@ -40,6 +42,8 @@ export class WDetailsMapComponent {
   cbAddress: EventEmitter<any> = new EventEmitter<any>();
   constructor(private http: HttpClient,
     private wsService: WebsocketService,
+    private socket: Socket,
+    public cdr: ChangeDetectorRef
 ){}
 
   ngOnInit(){
@@ -48,10 +52,15 @@ export class WDetailsMapComponent {
       .subscribe((lugares) => {
         this.lugares = lugares;
         this.crearMapa();
-        // this.socket.fromEvent<{ coords: any }>('position').subscribe(({ coords }) => {
-        //   this.addMarkerChofer(coords);
-        // });
-
+        this.socket.fromEvent<{  lat: number; lng: number }>('position-test').subscribe(
+          (data) => {
+            console.log(`Nueva posición recibida: usuariolatitud ${data.lat}, longitud ${data.lng}`);
+            const coords = [data.lng, data.lat];
+            this.addMarkerChofer(coords);
+            this.cdr.detectChanges();
+            }
+            );
+          this.cdr.detectChanges();
       });
       this.escucharSockets();
   }

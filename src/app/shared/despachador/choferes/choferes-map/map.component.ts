@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -50,6 +51,7 @@ export class WMapComponent {
     private renderer2: Renderer2,
     private socket: Socket,
     public dialog: MatDialog,
+    public cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -58,7 +60,13 @@ export class WMapComponent {
       .subscribe((lugares) => {
         this.lugares = lugares;
         this.crearMapa();
-
+        this.socket.fromEvent<{  lat: number; lng: number }>('position-test').subscribe(
+          (data) => {
+            console.log(`Nueva posición recibida: usuariolatitud ${data.lat}, longitud ${data.lng}`);
+            const coords = [data.lng, data.lat];
+            this.addMarkerChofer(coords)
+            }
+            );
       });
     this.escucharSockets();
   }
@@ -301,6 +309,24 @@ export class WMapComponent {
 
   }
 
+
+  addMarkerChofer(coords: any): void {
+    const el = document.createElement('div');
+    el.className = 'marker';
+    el.style.backgroundImage = `url(assets/icons/chofer.svg`;
+    el.style.width = `30px`;
+    el.style.height = `30px`;
+    el.style.backgroundSize = '100%';
+
+    // Crear el marcador en Mapbox
+    if (!this.markerDriver) {
+      this.markerDriver = new mapboxgl.Marker(el)
+        .setLngLat(coords)
+        .addTo(this.mapa);
+    } else {
+      this.markerDriver.setLngLat(coords);
+    }
+  }
 
 
   openDialog(
