@@ -30,6 +30,7 @@ export class WDetailsMapComponent {
 
   @Input() orderLat!: number;
   @Input() orderLng!: number;
+  @Input() userid!: any;
 
   mapa!: mapboxgl.Map;
   rutaCreada: boolean = false;
@@ -52,12 +53,13 @@ export class WDetailsMapComponent {
       .subscribe((lugares) => {
         this.lugares = lugares;
         this.crearMapa();
+        console.log('USER ID DE MAPA', this.userid)
         this.socket.fromEvent<{  lat: number; lng: number }>('position-test').subscribe(
           (data) => {
-            console.log(`Nueva posición recibida: usuariolatitud ${data.lat}, longitud ${data.lng}`);
             const coords = [data.lng, data.lat];
             this.addMarkerChofer(coords);
             this.cdr.detectChanges();
+
             }
             );
           this.cdr.detectChanges();

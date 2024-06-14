@@ -17,6 +17,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { IUsersRes } from '../../../../core/models/IUsersRes';
 import { OrdersService } from '../../../../core/services/orders.service';
+import { ClientService } from '../../../../core/services/client.service';
+import { IClient } from '../../../../core/models/IClient';
 
 
 @Component({
@@ -36,6 +38,7 @@ import { OrdersService } from '../../../../core/services/orders.service';
 })
 export class ModalNewOrderComponent {
   addNewOrderGroup!: FormGroup;
+  addNewClientForm!: FormGroup;
   users$!: Observable<IUsersRes[]>;
   isSubmitting = false;
 
@@ -45,40 +48,55 @@ export class ModalNewOrderComponent {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private ordersService: OrdersService,
+    private clientService: ClientService
   ) {}
 
   ngOnInit(): void {
+    this.addNewClientForm = this.formBuilder.group({
+      name: [''],
+      phone: [''],
+      reference: [this.data.placeName],
+    });
     this.addNewOrderGroup = this.formBuilder.group({
       userId: [''],
       lat: [this.data.lat],
       lng: [this.data.lng],
     });
-
     this.loadUsers();
   }
-
   loadUsers(): void {
 
     this.users$ = this.ordersService.getAllDrivers();
   }
 
-  onSubmit(): void {
-    if (this.addNewOrderGroup.valid) {
-      this.isSubmitting = true;
-      const { userId, lat, lng } = this.addNewOrderGroup.value;
 
-      this.ordersService.addNewOrder(userId, lat, lng).subscribe(
-        response => {
-          this.toastr.success('Orden creada exitosamente');
-          this.dialogRef.close(response);
-          this.isSubmitting = false;
+  onSubmit(): void {
+    if (this.addNewClientForm.valid && this.addNewOrderGroup.valid) {
+      this.isSubmitting = true;
+      const { name, phone, reference } = this.addNewClientForm.value;
+      this.clientService.registerClient({ name, phone, reference }).subscribe(
+        (clientResponse: any) => {
+          const clientId = clientResponse.data.id;
+          const { userId, lat, lng } = this.addNewOrderGroup.value;
+          this.ordersService.addNewOrder(userId, clientId || 0, lat, lng).subscribe(
+            (orderResponse) => {
+              this.toastr.success('Orden creada exitosamente');
+              this.dialogRef.close(orderResponse);
+              this.isSubmitting = false;
+            },
+            (error) => {
+              console.error('Error al crear la orden:', error);
+              this.toastr.error('Error al crear la orden');
+              this.isSubmitting = false;
+            }
+          );
         },
-        error => {
-          this.toastr.error('Error al crear la orden');
+        (error) => {
+          console.error('Error al registrar el cliente:', error);
+          this.toastr.error('Error al registrar el cliente');
           this.isSubmitting = false;
         }
       );
     }
   }
-
 }

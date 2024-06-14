@@ -334,13 +334,14 @@ export class WMapComponent {
     exitAnimationDuration: string
   ): void {
     const [lng, lat] = this.wayPoints.end.center;
+    const placeName = this.wayPoints.end.place_name;
     this.dialog.open(ModalNewOrderComponent, {
       width: '500px',
       enterAnimationDuration,
       exitAnimationDuration,
-      data: { lat, lng },
+      data: { lat, lng, placeName },
     });
-    console.log(this.wayPoints.end.center)
+    console.log(this.wayPoints.end.center);
   }
 
 }
