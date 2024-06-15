@@ -4,6 +4,7 @@ import { OrdersService } from '../../../../core/services/orders.service';
 import { Observable } from 'rxjs';
 import { IOrders } from '../../../../core/models/IOrders';
 import { RouterLink, RouterModule } from '@angular/router';
+import { translateStatus } from '../../../../core/utils/translateStatus.util';
 
 @Component({
   selector: 'w-orders-table',
@@ -19,5 +20,9 @@ export class WOrdersTableComponent {
 
   ngOnInit(): void {
     this.orders$ = this.ordersService.getAllOrders();
+  }
+
+  translateStatus(status: string): string {
+    return translateStatus(status);
   }
 }

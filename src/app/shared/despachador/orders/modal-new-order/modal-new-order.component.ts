@@ -80,20 +80,20 @@ export class ModalNewOrderComponent {
           const { userId, lat, lng } = this.addNewOrderGroup.value;
           this.ordersService.addNewOrder(userId, clientId || 0, lat, lng).subscribe(
             (orderResponse) => {
-              this.toastr.success('Orden creada exitosamente');
+              this.toastr.success('Order created successfully');
               this.dialogRef.close(orderResponse);
               this.isSubmitting = false;
             },
             (error) => {
               console.error('Error al crear la orden:', error);
-              this.toastr.error('Error al crear la orden');
+              this.toastr.error('Error creating order');
               this.isSubmitting = false;
             }
           );
         },
         (error) => {
           console.error('Error al registrar el cliente:', error);
-          this.toastr.error('Error al registrar el cliente');
+          this.toastr.error('Error registering client');
           this.isSubmitting = false;
         }
       );

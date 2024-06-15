@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Agregar Nueva Orden</h2>
+<h2 mat-dialog-title>Add New Order</h2>
 <mat-dialog-content>
   <form [formGroup]="addNewOrderGroup" (ngSubmit)="onSubmit()">
     <div class="flex flex-col gap-6 p-2">
@@ -7,20 +7,20 @@
         <w-input
         controlKey="name"
         inputType="onlyText"
-        placeholder="Nombre del cliente"
-        error="El nombre del cliente"
+        placeholder="Customer name"
+        error="Customer names are required"
         [required]="true"
       ></w-input>
       <w-input
         controlKey="phone"
         inputType="onlyText"
-        placeholder="Telefono del cliente"
-        error="El telefono es requerido"
+        placeholder="Customer phone"
+        error="Customer phone is required"
         [required]="true"
       ></w-input>
       </form>
       <div>
-        <label for="userId">Asignar un chofer</label>
+        <label for="userId">Assign a driver</label>
         <select
           formControlName="userId"
           class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
@@ -37,7 +37,7 @@
         type="submit"
         class="w-full text-white p-2"
       >
-        Generar Nueva Orden
+      Generate New Order
       </button>
     </div>
   </form>

@@ -21,8 +21,8 @@ export class RouteService {
         ),
       },
       {
-        path: 'users',
-        label: 'Users',
+        path: 'clients',
+        label: 'Clients',
         icon: this.sanitizer.bypassSecurityTrustHtml(
           `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -34,7 +34,7 @@ export class RouteService {
       },
       {
         path: 'drivers',
-        label: 'Choferes',
+        label: 'Drivers',
         icon: this.sanitizer.bypassSecurityTrustHtml(
           `
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -47,7 +47,7 @@ export class RouteService {
       },
       {
         path: 'orders',
-        label: 'Ordenes',
+        label: 'Orders',
         icon: this.sanitizer.bypassSecurityTrustHtml(
           `
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrdersService } from '../../../../core/services/orders.service';
 import { WDetailsMapComponent } from '../../../../shared/despachador/orders/details-map/details-map.component';
+import { translateStatus } from '../../../../core/utils/translateStatus.util';
 
 @Component({
   selector: 'app-details',
@@ -26,5 +27,9 @@ export default class DetailsComponent {
         console.error('Error fetching order details', error);
       }
     );
+  }
+
+  translateStatus(status: string): string {
+    return translateStatus(status);
   }
 }

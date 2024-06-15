@@ -14,7 +14,7 @@
           [disabled]="rutaCreada"
           (click)="limpiarMapa()"
         >
-          Limpiar
+          Clean Map
         </button>
         <button
           (click)="dibujarRuta()"
@@ -22,7 +22,7 @@
           color="primary"
           [disabled]="!wayPoints.start || !wayPoints.end"
         >
-          Establecer Ruta
+        Set Route
         </button>
         <button
           mat-raised-button
@@ -30,7 +30,7 @@
           (click)="openDialog('0ms', '0ms')"
           [disabled]="!wayPoints.start || !wayPoints.end"
         >
-          Generar Orden
+        Generate Order
         </button>
       </div>
     </div>
@@ -46,7 +46,7 @@
           'border-gray-300 bg-white': modeInput !== 'start'
         }"
       >
-        <div class="mock-label font-semibold text-lg mb-2">Inicio</div>
+        <div class="mock-label font-semibold text-lg mb-2">Start</div>
         <div class="mock-input text-sm text-gray-500">
           {{ wayPoints.start?.place_name }}
         </div>
