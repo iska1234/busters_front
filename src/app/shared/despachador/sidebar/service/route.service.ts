@@ -10,7 +10,7 @@ export class RouteService {
   getRoutes() {
     return [
       {
-        path: '/',
+        path: 'dashboard',
         label: 'Dashboard',
         icon: this.sanitizer.bypassSecurityTrustHtml(
           `
@@ -21,7 +21,7 @@ export class RouteService {
         ),
       },
       {
-        path: '/users',
+        path: 'users',
         label: 'Users',
         icon: this.sanitizer.bypassSecurityTrustHtml(
           `
@@ -33,7 +33,7 @@ export class RouteService {
         ),
       },
       {
-        path: '/drivers',
+        path: 'drivers',
         label: 'Choferes',
         icon: this.sanitizer.bypassSecurityTrustHtml(
           `
@@ -46,7 +46,7 @@ export class RouteService {
         ),
       },
       {
-        path: '/orders',
+        path: 'orders',
         label: 'Ordenes',
         icon: this.sanitizer.bypassSecurityTrustHtml(
           `

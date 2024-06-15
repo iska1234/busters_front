@@ -20,7 +20,7 @@ import { IAuthRes } from '../../../core/models/IAuthRes';
   templateUrl: './login.component.html',
 
 })
-export class LoginComponent {
+export default class LoginComponent {
   private tkService = inject(TokenService);
   private userDataService = inject(UserDataService);
   private jwtDecoderService = inject(JwtDecoderService);
@@ -44,13 +44,25 @@ export class LoginComponent {
         this.userDataService.setUserId(decodedToken.userId.toString());
         this.userDataService.setRole(decodedToken.role);
         this.tkService.setToken(res.data.token);
-        const urlRole = 'dispatcher';
-        this.router.navigate(['/'+urlRole.toString()]).then(
-          (response) => {
-            this.toastr.success('Login Exitoso.', 'Success');
-            this.loading = false;
-          }
-        );
+        let initialRoute = '';
+        switch (decodedToken.role) {
+          case 'admin':
+            initialRoute = '/';
+            break;
+          case 'user':
+            initialRoute = '/';
+            break;
+          case 'despachador':
+            initialRoute = '/dashboard';
+            break;
+          default:
+            initialRoute = '/';
+            break;
+        }
+
+        this.router.navigate([initialRoute]);
+        this.toastr.success('Login Exitoso.', 'Success');
+        this.loading = false;
       },
       error: (err) => {
         this.toastr.error('Credenciales Inválidas', 'Error');

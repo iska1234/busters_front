@@ -1,14 +1,28 @@
-<div class="p-2">
-  <header class="bg-gradient-to-br from-stone-900 to-red-500 p-4 flex justify-between items-center rounded-xl">
-    <img src="/assets/img/logo.png" width="100px" alt="" />
+<div>
+  <header class="bg-white p-4 flex justify-between items-center">
+    <div class="flex items-center gap-8">
+      <img src="/assets/img/logo.png" width="100px" alt="" />
+      <div class="flex gap-4 items-center justify-center">
+        <div
+          *ngFor="let route of routes"
+          [routerLink]="[route.path]"
+          role="button"
+          class="w-full p-3 text-start"
+          [ngClass]="{ 'active-route': isActive(route.path) }"
+        >
+          <span>{{ route.label }}</span>
+        </div>
+      </div>
+    </div>
     <div class="flex items-center gap-2">
-
-      <button (click)="closeSesion()" class="bg-[#161616] shadow-xl rounded-lg flex justify-center items-center p-1">
+      <button
+        (click)="closeSession()"
+        class="bg-[#161616] shadow-xl rounded-lg flex justify-center items-center p-1"
+      >
         <div class="w-8">
-          <img src="assets/icons/exit-ico.svg" alt="exit" width="30">
+          <img src="assets/icons/exit-ico.svg" alt="exit" width="30" />
         </div>
       </button>
-
     </div>
   </header>
 </div>
