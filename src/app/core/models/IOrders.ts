@@ -7,4 +7,8 @@ export interface IOrders {
   lat:number;
   status:string;
   timestamp:string;
+  clientId?:number;
+  clientname?: string;
+  clientphone?:string;
+  clientreference?:string;
 }

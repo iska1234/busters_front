@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -50,6 +51,7 @@ export class WMapComponent {
     private renderer2: Renderer2,
     private socket: Socket,
     public dialog: MatDialog,
+    public cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -301,19 +303,38 @@ export class WMapComponent {
   }
 
 
+  addMarkerChofer(coords: any): void {
+    const el = document.createElement('div');
+    el.className = 'marker';
+    el.style.backgroundImage = `url(assets/icons/chofer.svg`;
+    el.style.width = `30px`;
+    el.style.height = `30px`;
+    el.style.backgroundSize = '100%';
+
+    // Crear el marcador en Mapbox
+    if (!this.markerDriver) {
+      this.markerDriver = new mapboxgl.Marker(el)
+        .setLngLat(coords)
+        .addTo(this.mapa);
+    } else {
+      this.markerDriver.setLngLat(coords);
+    }
+  }
+
 
   openDialog(
     enterAnimationDuration: string,
     exitAnimationDuration: string
   ): void {
     const [lng, lat] = this.wayPoints.end.center;
+    const placeName = this.wayPoints.end.place_name;
     this.dialog.open(ModalNewOrderComponent, {
       width: '500px',
       enterAnimationDuration,
       exitAnimationDuration,
-      data: { lat, lng },
+      data: { lat, lng, placeName },
     });
-    console.log(this.wayPoints.end.center)
+    console.log(this.wayPoints.end.center);
   }
 
 }

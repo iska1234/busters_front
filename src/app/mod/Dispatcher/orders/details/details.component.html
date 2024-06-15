@@ -1,14 +1,19 @@
 <div *ngIf="order" class="overflow-x-auto bg-white p-5 shadow-md rounded-lg">
   <h2 class="text-2xl font-semibold mb-4">Order Details</h2>
+  <p><strong>Order ID:</strong> {{ order.id }}</p>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div>
-      <p><strong>Order ID:</strong> {{ order.id }}</p>
-      <p><strong>User Name:</strong> {{ order.name }} {{ order.lastname }}</p>
+
+      <p><strong>Client name:</strong> {{ order.userid }}</p>
+      <p><strong>Client name:</strong> {{ order.clientname }}</p>
+      <p><strong>Client phone:</strong> {{ order.clientphone }}</p>
+      <p><strong>Client reference:</strong> {{ order.clientreference }}</p>
     </div>
     <div>
+      <p><strong>Driver name:</strong> {{ order.name }} {{ order.lastname }}</p>
       <p><strong>Status:</strong> {{ order.status }}</p>
       <p><strong>Timestamp:</strong> {{ order.timestamp | date:'short' }}</p>
     </div>
   </div>
 </div>
-<w-details-map [orderLat]="order.lat" [orderLng]="order.lng"></w-details-map>
+<w-details-map *ngIf="order" [userid]="order.userid" [orderLat]="order.lat" [orderLng]="order.lng"></w-details-map>

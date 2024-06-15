@@ -1,0 +1,6 @@
+.active-route {
+  color: #ef4444; /* Cambia esto según tus preferencias de color */
+  border-bottom: 2px solid #ef4444;
+  transition: all;
+  transition-duration: 500;
+}

@@ -17,9 +17,9 @@ export class OrdersService {
   constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   // Método para crear una nueva orden
-  addNewOrder(userId: number, lat: number, lng: number): Observable<any> {
+  addNewOrder(userId: number, clientId: number, lat: number, lng: number): Observable<any> {
     const headers = getAuthHeaders(this.tokenService);
-    const body = { userId, lat, lng };
+    const body = { userId, clientId, lat, lng };
     return this.http.post(`${this.apiUrl}/orders/new`, body, { headers });
   }
   // Método para obtener todos los driver

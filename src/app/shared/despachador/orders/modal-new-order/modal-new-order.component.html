@@ -2,8 +2,25 @@
 <mat-dialog-content>
   <form [formGroup]="addNewOrderGroup" (ngSubmit)="onSubmit()">
     <div class="flex flex-col gap-6 p-2">
+
+      <form [formGroup]="addNewClientForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-6">
+        <w-input
+        controlKey="name"
+        inputType="onlyText"
+        placeholder="Nombre del cliente"
+        error="El nombre del cliente"
+        [required]="true"
+      ></w-input>
+      <w-input
+        controlKey="phone"
+        inputType="onlyText"
+        placeholder="Telefono del cliente"
+        error="El telefono es requerido"
+        [required]="true"
+      ></w-input>
+      </form>
       <div>
-        <label for="userId">Asignar un responsable</label>
+        <label for="userId">Asignar un chofer</label>
         <select
           formControlName="userId"
           class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"

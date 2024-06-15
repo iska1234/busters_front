@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -14,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { ILugar } from '../../../../core/models/ILugar';
 import { RespMarcadores, WayPoints } from '../../../../core/models/IMapas';
+import { Socket } from 'ngx-socket-io';
 
 
 
@@ -28,6 +30,7 @@ export class WDetailsMapComponent {
 
   @Input() orderLat!: number;
   @Input() orderLng!: number;
+  @Input() userid!: any;
 
   mapa!: mapboxgl.Map;
   rutaCreada: boolean = false;
@@ -40,6 +43,8 @@ export class WDetailsMapComponent {
   cbAddress: EventEmitter<any> = new EventEmitter<any>();
   constructor(private http: HttpClient,
     private wsService: WebsocketService,
+    private socket: Socket,
+    public cdr: ChangeDetectorRef
 ){}
 
   ngOnInit(){
@@ -48,10 +53,14 @@ export class WDetailsMapComponent {
       .subscribe((lugares) => {
         this.lugares = lugares;
         this.crearMapa();
-        // this.socket.fromEvent<{ coords: any }>('position').subscribe(({ coords }) => {
-        //   this.addMarkerChofer(coords);
-        // });
-
+        console.log('USER ID DE MAPA', this.userid)
+        this.socket.fromEvent<{  lat: number; lng: number }>('position-test').subscribe(
+          (data) => {
+            console.log(`Nueva posición recibida: usuariolatitud ${data.lat}, longitud ${data.lng}`);
+            const coords = [data.lng, data.lat];
+            this.addMarkerChofer(coords)
+            }
+            );
       });
       this.escucharSockets();
   }
@@ -221,19 +230,24 @@ export class WDetailsMapComponent {
     return marker;
   }
 
+
   addMarkerChofer(coords: any): void {
     const el = document.createElement('div');
-
     el.className = 'marker';
     el.style.backgroundImage = `url(assets/icons/chofer.svg`;
     el.style.width = `30px`;
     el.style.height = `30px`;
     el.style.backgroundSize = '100%';
-    if(!this.markerDriver){
+
+    // Crear el marcador en Mapbox
+    if (!this.markerDriver) {
       this.markerDriver = new mapboxgl.Marker(el)
-    }else{
-      this.markerDriver.setLngLat(coords).addTo(this.mapa);
+        .setLngLat(coords)
+        .addTo(this.mapa);
+    } else {
+      this.markerDriver.setLngLat(coords);
     }
   }
+
 
 }
