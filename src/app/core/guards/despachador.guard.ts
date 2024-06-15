@@ -1,9 +1,15 @@
 import { inject } from '@angular/core';
 import type { CanMatchFn } from '@angular/router';
 import { UserDataService } from '../services/user-data.service';
+import {Router} from "@angular/router";
 
 
-export const despachadorGuard: CanMatchFn = (route, segments) => {
+export const dispatchGuard: CanMatchFn = (route, segments) => {
   const role = inject(UserDataService);
-  return role.getRole() === 'despachador' ? true:true;
+  const router = inject(Router);
+  if(role.getRole() === 'despachador'){
+    return true;
+  }else{
+    return router.createUrlTree(['/']);
+  }
 };

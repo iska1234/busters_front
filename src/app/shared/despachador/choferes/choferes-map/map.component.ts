@@ -58,7 +58,6 @@ export class WMapComponent {
       .subscribe((lugares) => {
         this.lugares = lugares;
         this.crearMapa();
-
       });
     this.escucharSockets();
   }
