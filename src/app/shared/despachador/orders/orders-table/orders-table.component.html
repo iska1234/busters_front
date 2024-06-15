@@ -10,17 +10,17 @@
         <th
           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-300 text-left text-xs font-semibold text-gray-800 uppercase tracking-wider"
         >
-          Responsable
+          Responsible
         </th>
         <th
           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-300 text-left text-xs font-semibold text-gray-800 uppercase tracking-wider"
         >
-          Status
+          Order Status
         </th>
         <th
           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-300 text-left text-xs font-semibold text-gray-800 uppercase tracking-wider"
         >
-          Timestamp
+          Order Date and Time
         </th>
         <th
           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-300 text-center text-xs font-semibold text-gray-800 uppercase tracking-wider"
@@ -43,7 +43,7 @@
           </p>
         </td>
         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          <p class="text-gray-900 whitespace-no-wrap">{{ order.status }}</p>
+          <p class="text-gray-900 whitespace-no-wrap">{{ translateStatus(order.status) }}</p>
         </td>
         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
           <p class="text-gray-900 whitespace-no-wrap">
@@ -54,7 +54,7 @@
           class="px-5 py-5 border-b border-gray-200 bg-white text-sm flex items-center justify-center"
         >
           <p class="text-gray-900 whitespace-no-wrap">
-            <a [routerLink]="['/dispatcher/order-details', order.id]">
+            <a [routerLink]="['/order-details', order.id]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

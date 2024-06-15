@@ -53,7 +53,7 @@ export default class LoginComponent {
             initialRoute = '/';
             break;
           case 'despachador':
-            initialRoute = '/dashboard';
+            initialRoute = '/dispatcher/dashboard';
             break;
           default:
             initialRoute = '/';
@@ -61,11 +61,11 @@ export default class LoginComponent {
         }
 
         this.router.navigate([initialRoute]);
-        this.toastr.success('Login Exitoso.', 'Success');
+        this.toastr.success('Login Successful', 'Success');
         this.loading = false;
       },
       error: (err) => {
-        this.toastr.error('Credenciales Inválidas', 'Error');
+        this.toastr.error('Invalid Credentials', 'Error');
         this.loading = false;
       }
     });

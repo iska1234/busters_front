@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './core/guards/admin.guard';
 import { userGuard } from './core/guards/user.guard';
-import { despachadorGuard } from './core/guards/despachador.guard';
 import { authGuard } from './core/guards/auth.guard';
+import { dispatchGuard } from './core/guards/despachador.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

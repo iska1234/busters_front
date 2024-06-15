@@ -9,7 +9,7 @@ export const DISPATCHER_ROUTES: Routes = [
     loadComponent:()=>import('./dispatcher.component'),
     children: [
       { path: 'dashboard', component: HomeComponent },
-      { path: 'users', component: UsersComponent },
+      { path: 'clients', component: UsersComponent },
       { path: 'drivers', component: DriverComponent },
       { path: 'orders', component: OrdersComponent},
       { path: 'order-details/:id', component: DetailsComponent },
