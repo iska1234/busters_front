@@ -25,11 +25,8 @@ export const routes: Routes = [
     canMatch: [userGuard],
   },
   {
-    path: '',
-    loadChildren: () =>
-      import('./mod/Dispatcher/dispatcher.routes').then(
-        (r) => r.DISPATCHER_ROUTES
-      ),
-    canMatch: [despachadorGuard],
+    path: 'dispatcher',
+    loadChildren: () => import('./mod/Dispatcher/dispatcher.routes').then((r) => r.DISPATCHER_ROUTES),
+    canActivate:[dispatchGuard]
   },
 ];

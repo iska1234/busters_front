@@ -60,13 +60,6 @@ export class WMapComponent {
       .subscribe((lugares) => {
         this.lugares = lugares;
         this.crearMapa();
-        this.socket.fromEvent<{  lat: number; lng: number }>('position-test').subscribe(
-          (data) => {
-            console.log(`Nueva posición recibida: usuariolatitud ${data.lat}, longitud ${data.lng}`);
-            const coords = [data.lng, data.lat];
-            this.addMarkerChofer(coords)
-            }
-            );
       });
     this.escucharSockets();
   }
