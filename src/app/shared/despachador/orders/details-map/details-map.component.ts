@@ -56,13 +56,11 @@ export class WDetailsMapComponent {
         console.log('USER ID DE MAPA', this.userid)
         this.socket.fromEvent<{  lat: number; lng: number }>('position-test').subscribe(
           (data) => {
+            console.log(`Nueva posición recibida: usuariolatitud ${data.lat}, longitud ${data.lng}`);
             const coords = [data.lng, data.lat];
-            this.addMarkerChofer(coords);
-            this.cdr.detectChanges();
-
+            this.addMarkerChofer(coords)
             }
             );
-          this.cdr.detectChanges();
       });
       this.escucharSockets();
   }
@@ -232,19 +230,24 @@ export class WDetailsMapComponent {
     return marker;
   }
 
+
   addMarkerChofer(coords: any): void {
     const el = document.createElement('div');
-
     el.className = 'marker';
     el.style.backgroundImage = `url(assets/icons/chofer.svg`;
     el.style.width = `30px`;
     el.style.height = `30px`;
     el.style.backgroundSize = '100%';
-    if(!this.markerDriver){
+
+    // Crear el marcador en Mapbox
+    if (!this.markerDriver) {
       this.markerDriver = new mapboxgl.Marker(el)
-    }else{
-      this.markerDriver.setLngLat(coords).addTo(this.mapa);
+        .setLngLat(coords)
+        .addTo(this.mapa);
+    } else {
+      this.markerDriver.setLngLat(coords);
     }
   }
+
 
 }
